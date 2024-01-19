@@ -1,11 +1,20 @@
-﻿using System;
+using System;
+using System.Text;
+
 namespace Blackjack
 { 
     class Programm
     {
         static void Main(string[] args)
         {
-            int[] PlayDeck = GetPlayDeck();            
+            int[] PlayDeck = GetPlayDeck();
+            int[] DeckShuffled = ShuffleDeck(PlayDeck);
+            int[] PlayerHand = new int[20];
+            for(int i = 0; i < 2; i++)
+            {
+                PlayerHand[i] = DrawCard(DeckShuffled);
+                DeckShuffled = EmptyTop(DeckShuffled);
+            }   
         }
 
         static int[] GetPlayDeck()
@@ -82,6 +91,27 @@ namespace Blackjack
             return deckToShuffle;  
         }
 
+        static int DrawCard(int[] Deck)
+        {
+            int i = 0;
+            while (Deck[i] == 0)
+            {
+                i++;
+            }
+            int Card = Deck[i];
+            return Card;
+        }
+        static int[] EmptyTop(int[] Deck)
+        {
+            int i = 0;
+            while (Deck[i] == 0)
+            {
+                i++;
+            }
+            Deck[i] = 0;
+            return Deck;
+        }
+
 
         static double GetStartingMoney()
         {
@@ -111,6 +141,7 @@ namespace Blackjack
 
         static double GetBet(double CurrentBalance)
         {
+            
             bool repeat = true;
             double Bet = 0;
             Console.Clear();
@@ -125,14 +156,14 @@ namespace Blackjack
                     {
                         Console.Clear();
                         Console.OutputEncoding = Encoding.UTF8;
-                        Console.WriteLine($"Du hasst erfolgreich {Bet}€ gesetzt");
+                        Console.WriteLine($"Du hast erfolgreich {Bet}€ gesetzt");
                         repeat = false;
                     }
                     else
                     {
                         Console.Clear();
                         Console.OutputEncoding = Encoding.UTF8;
-                        Console.WriteLine("Du darfst nur so viel setzen, wie du auch hasst!");
+                        Console.WriteLine("Du darfst nur so viel setzen, wie du auch hast!");
                         Console.WriteLine($"Aktuell hasst du {CurrentBalance}€");
                     }
                 }
@@ -145,7 +176,6 @@ namespace Blackjack
             }
             return Bet;
         }
-
 
         
     }
