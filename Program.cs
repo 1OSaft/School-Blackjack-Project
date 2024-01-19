@@ -87,9 +87,9 @@ namespace Blackjack
         {
             double StartingMoney = 0;
             bool repeat = true;
+            Console.Clear();
             while (repeat)
             {
-                Console.Clear();
                 Console.WriteLine("Mit wie viel Startgeld willst du starten? ");
                 bool IsStartingMoneyNumeric = double.TryParse(Console.ReadLine(), out StartingMoney);
                 if (IsStartingMoneyNumeric)
@@ -103,7 +103,46 @@ namespace Blackjack
                     repeat = true;
                 }
             }
+
+
             return StartingMoney;
+        }
+
+
+        static double GetBet(double CurrentBalance)
+        {
+            Console.OutputEncoding = Encoding.UTF8;
+            bool repeat = true;
+            double Bet = 0;
+            Console.Clear();
+            while (repeat)
+            { 
+                Console.WriteLine("Wie viel willst du setzen?");
+
+                bool IsBetNumeric = double.TryParse(Console.ReadLine(), out Bet);
+                if (IsBetNumeric)
+                {
+                    if (CurrentBalance >= Bet)
+                    {
+                        Console.Clear();
+                        Console.WriteLine($"Du hasst erfolgreich {Bet}€ gesetzt");
+                        repeat = false;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Du darfst nur so viel setzen, wie du auch hasst!");
+                        Console.WriteLine($"Aktuell hasst du {CurrentBalance}€");
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Ungültige Eingabe");
+                    repeat = true;
+                }
+            }
+            return Bet;
         }
 
         
