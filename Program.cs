@@ -57,6 +57,24 @@ namespace Blackjack
                 Console.Clear();
                 return PlayDeckBig;
             }
+            static int[] ShuffleDeck(int[] deckToShuffle)
+{
+    Random ranNum = new Random();
+    int randomNum, temp;
+    
+    //needs the deck to shuffle (can be unlimited number of cards)
+    for (int i = deckToShuffle.Length - 1; i > 0; --i)
+    {
+        //new random for non shuffeled item
+        randomNum = ranNum.Next(i + 1);
+
+        //swap the random item with last item in the array
+        temp = deckToShuffle[i];
+        deckToShuffle[i] = deckToShuffle[randomNum];
+        deckToShuffle[randomNum] = temp;
+    }
+    return deckToShuffle;
+}
         }
     }
 }
