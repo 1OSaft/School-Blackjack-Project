@@ -61,6 +61,8 @@ namespace Blackjack
             
             
         }
+
+        
         static int[] ShuffleDeck(int[] deckToShuffle)
         {
             Random ranNum = new Random();
@@ -77,9 +79,34 @@ namespace Blackjack
                 deckToShuffle[i] = deckToShuffle[randomNum];
                 deckToShuffle[randomNum] = temp;
             }
-            return deckToShuffle;
-            
+            return deckToShuffle;  
         }
+
+
+        static double GetStartingMoney()
+        {
+            double StartingMoney = 0;
+            bool repeat = true;
+            while (repeat)
+            {
+                Console.Clear();
+                Console.WriteLine("Mit wie viel Startgeld willst du starten? ");
+                bool IsStartingMoneyNumeric = double.TryParse(Console.ReadLine(), out StartingMoney);
+                if (IsStartingMoneyNumeric)
+                {
+                    repeat = false;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Ungültige Eingabe");
+                    repeat = true;
+                }
+            }
+            return StartingMoney;
+        }
+
+        
     }
 }
 
