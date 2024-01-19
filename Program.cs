@@ -58,6 +58,7 @@ namespace Blackjack
                 return PlayDeckBig;
             }
             
+            
             static int[] ShuffleDeck(int[] deckToShuffle)
             {
                 Random ranNum = new Random();
