@@ -111,7 +111,6 @@ namespace Blackjack
 
         static double GetBet(double CurrentBalance)
         {
-            Console.OutputEncoding = Encoding.UTF8;
             bool repeat = true;
             double Bet = 0;
             Console.Clear();
@@ -125,12 +124,14 @@ namespace Blackjack
                     if (CurrentBalance >= Bet)
                     {
                         Console.Clear();
+                        Console.OutputEncoding = Encoding.UTF8;
                         Console.WriteLine($"Du hasst erfolgreich {Bet}€ gesetzt");
                         repeat = false;
                     }
                     else
                     {
                         Console.Clear();
+                        Console.OutputEncoding = Encoding.UTF8;
                         Console.WriteLine("Du darfst nur so viel setzen, wie du auch hasst!");
                         Console.WriteLine($"Aktuell hasst du {CurrentBalance}€");
                     }
@@ -144,6 +145,7 @@ namespace Blackjack
             }
             return Bet;
         }
+
 
         
     }
