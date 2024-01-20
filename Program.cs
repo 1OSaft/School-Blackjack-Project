@@ -2,20 +2,24 @@ using System;
 using System.Text;
 
 namespace Blackjack
-{ 
+{
     class Programm
     {
         static void Main(string[] args)
         {
+            double CurrentBalance = GetStartingMoney();
             int[] PlayDeck = GetPlayDeck();
             int[] DeckShuffled = ShuffleDeck(PlayDeck);
+            double CurrentBet = GetBet(CurrentBalance);
             int[] PlayerHand = new int[20];
-            for(int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
             {
                 PlayerHand[i] = DrawCard(DeckShuffled);
+                Console.WriteLine(PlayerHand[i]);
                 DeckShuffled = EmptyTop(DeckShuffled);
-            }   
+            }
         }
+        
 
         static int[] GetPlayDeck()
         {
@@ -66,29 +70,29 @@ namespace Blackjack
                 Console.Clear();
                 return PlayDeckBig;
             }
-            
-            
-            
+
+
+
         }
 
-        
+
         static int[] ShuffleDeck(int[] deckToShuffle)
         {
             Random ranNum = new Random();
             int randomNum, temp;
-            
+
             //needs the deck to shuffle (can be unlimited number of cards)
             for (int i = deckToShuffle.Length - 1; i > 0; --i)
             {
                 //new random for non shuffeled item
                 randomNum = ranNum.Next(i + 1);
-        
+
                 //swap the random item with last item in the array
                 temp = deckToShuffle[i];
                 deckToShuffle[i] = deckToShuffle[randomNum];
                 deckToShuffle[randomNum] = temp;
             }
-            return deckToShuffle;  
+            return deckToShuffle;
         }
 
         static int DrawCard(int[] Deck)
@@ -101,6 +105,7 @@ namespace Blackjack
             int Card = Deck[i];
             return Card;
         }
+
         static int[] EmptyTop(int[] Deck)
         {
             int i = 0;
@@ -141,12 +146,14 @@ namespace Blackjack
 
         static double GetBet(double CurrentBalance)
         {
-            
+
             bool repeat = true;
             double Bet = 0;
             Console.Clear();
             while (repeat)
-            { 
+            {
+                Console.OutputEncoding = Encoding.UTF8;
+                Console.WriteLine($"Kontostand: {CurrentBalance}€");
                 Console.WriteLine("Wie viel willst du setzen?");
 
                 bool IsBetNumeric = double.TryParse(Console.ReadLine(), out Bet);
@@ -177,8 +184,6 @@ namespace Blackjack
             return Bet;
         }
 
-        
+
     }
 }
-
-
