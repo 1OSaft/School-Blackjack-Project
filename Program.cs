@@ -7,10 +7,13 @@ namespace Blackjack
     {
         static void Main(string[] args)
         {
-            double CurrentBalance = GetStartingMoney();
+            double CurrentBalance = GetMoney("start", 0, 0, "");
             int[] PlayDeck = GetPlayDeck();
             int[] DeckShuffled = ShuffleDeck(PlayDeck);
+
             double CurrentBet = GetBet(CurrentBalance);
+            CurrentBalance = GetMoney("Other", CurrentBalance, CurrentBet, "-");
+            
             int[] PlayerHand = new int[20];
             for (int i = 0; i < 2; i++)
             {
@@ -118,30 +121,47 @@ namespace Blackjack
         }
 
 
-        static double GetStartingMoney()
+        static double GetMoney(string MoneyType, double Money, double Amount, string MathType)
         {
-            double StartingMoney = 0;
-            bool repeat = true;
-            Console.Clear();
-            while (repeat)
+            if (MoneyType == "start")
             {
-                Console.WriteLine("Mit wie viel Startgeld willst du starten? ");
-                bool IsStartingMoneyNumeric = double.TryParse(Console.ReadLine(), out StartingMoney);
-                if (IsStartingMoneyNumeric)
+                double StartingMoney = 0;
+                bool repeat = true;
+                Console.Clear();
+                while (repeat)
                 {
-                    repeat = false;
+                    Console.WriteLine("Mit wie viel Startgeld willst du starten? ");
+                    bool IsStartingMoneyNumeric = double.TryParse(Console.ReadLine(), out StartingMoney);
+                    if (IsStartingMoneyNumeric)
+                    {
+                        repeat = false;
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Ungültige Eingabe");
+                        repeat = true;
+                    }
+                }
+
+
+                return StartingMoney;
+            }
+            else
+            {
+                if (MathType == "-")
+                {
+                    Money = Money - Amount;
                 }
                 else
                 {
-                    Console.Clear();
-                    Console.WriteLine("Ungültige Eingabe");
-                    repeat = true;
+                    Money = Money - Amount;
                 }
+                return Money;
             }
-
-
-            return StartingMoney;
         }
+ 
+
 
 
         static double GetBet(double CurrentBalance)
