@@ -18,9 +18,14 @@ namespace Blackjack
             for (int i = 0; i < 2; i++)
             {
                 PlayerHand[i] = DrawCard(DeckShuffled);
-                Console.WriteLine(PlayerHand[i]);
                 DeckShuffled = EmptyTop(DeckShuffled);
             }
+            for (int i = 0; i < 2; i++)
+            {
+                DealerHand[i] = DrawCard(DeckShuffled);
+                DeckShuffled = EmptyTop(DeckShuffled);
+            }
+            int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled);
         }
 
         
@@ -206,6 +211,26 @@ namespace Blackjack
             }
             return Bet;
         }
+
+        
+         static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled)
+         {
+             Console.WriteLine($"Du hast {PlayerHand[0]} und {PlayerHand[1]}. Eine Karte des Dealers ist {DealerHand[0]}. Was möchtest du machen?" +
+                $"\n1: Hit \n2: Double \n3: Stand");
+             bool Repeat = true;
+             int PlayerAction = 0;
+             while (Repeat == true)
+             {
+                 PlayerAction = Convert.ToInt32(Console.ReadLine());
+                 bool IsActionNumeric = int.TryParse(Console.ReadLine(), out PlayerAction);
+                 if(IsActionNumeric && PlayerAction == 1 || PlayerAction == 2 || PlayerAction == 3)
+                 {
+                     Repeat = false;
+                 }
+                 else { Console.Clear(); Console.WriteLine("Falsche Eingabe"); }
+             }
+             return PlayerAction;
+         }
 
 
 
