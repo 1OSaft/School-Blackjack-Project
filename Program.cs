@@ -164,29 +164,31 @@ namespace Blackjack
 
 
 
+        //Get how much money the players betts
         static double GetBet(double CurrentBalance)
         {
 
             bool repeat = true;
             double Bet = 0;
             Console.Clear();
-            while (repeat)
+            while (repeat)          //Loop to ensure a valid amount of money
             {
                 Console.OutputEncoding = Encoding.UTF8;
                 Console.WriteLine($"Kontostand: {CurrentBalance}€");
                 Console.WriteLine("Wie viel willst du setzen?");
 
+                //Check if amount is valid
                 bool IsBetNumeric = double.TryParse(Console.ReadLine(), out Bet);
                 if (IsBetNumeric)
                 {
-                    if (CurrentBalance >= Bet)
+                    if (CurrentBalance >= Bet)          //Success message
                     {
                         Console.Clear();
                         Console.OutputEncoding = Encoding.UTF8;
                         Console.WriteLine($"Du hast erfolgreich {Bet}€ gesetzt");
                         repeat = false;
                     }
-                    else
+                    else        //Error message if player doesnt have enough money
                     {
                         Console.Clear();
                         Console.OutputEncoding = Encoding.UTF8;
@@ -194,7 +196,7 @@ namespace Blackjack
                         Console.WriteLine($"Aktuell hasst du {CurrentBalance}€");
                     }
                 }
-                else
+                else        // Error message if its not a valid amount
                 {
                     Console.Clear();
                     Console.WriteLine("Ungültige Eingabe");
@@ -203,6 +205,7 @@ namespace Blackjack
             }
             return Bet;
         }
+
 
 
     }
