@@ -22,10 +22,12 @@ namespace Blackjack
                 DeckShuffled = EmptyTop(DeckShuffled);
             }
         }
-        
 
+        
+        //Get Array of 6 or 8 Playdecks
         static int[] GetPlayDeck()
         {
+            // Register Small Playdeck
             int[] PlayDeckSmall = {
                     2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11,
                     2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11,
@@ -34,6 +36,7 @@ namespace Blackjack
                     2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11,
                     2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11
                 };
+            // register Big Playdeck
             int[] PlayDeckBig = {
                     2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11,
                     2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11,
@@ -47,15 +50,15 @@ namespace Blackjack
             bool repeat = true;
             int NumberOfDecks = 6;
             Console.Clear();
-            while (repeat)
+            while (repeat)      //Check if amount if valid
             {
                 Console.WriteLine("Möchtest du mit 6 oder mit 8 Decks spielen?");
-                bool IsNumberOfDecksNumeric = int.TryParse(Console.ReadLine(), out NumberOfDecks);
-                if (IsNumberOfDecksNumeric && NumberOfDecks == 6 || NumberOfDecks == 8)
+                bool IsNumberOfDecksNumeric = int.TryParse(Console.ReadLine(), out NumberOfDecks);      //Readline
+                if (IsNumberOfDecksNumeric && NumberOfDecks == 6 || NumberOfDecks == 8)         //Is it valid?
                 {
                     repeat = false;
                 }
-                else
+                else        //Error message
                 {
                     Console.Clear();
                     Console.WriteLine("Ungültige Eingange");
@@ -63,19 +66,16 @@ namespace Blackjack
                 }
 
             }
-            if (NumberOfDecks == 6)
+            if (NumberOfDecks == 6)         //Return Small Playdeck
             {
                 Console.Clear();
                 return PlayDeckSmall;
             }
-            else
+            else        //Return Big Playdeck
             {
                 Console.Clear();
                 return PlayDeckBig;
             }
-
-
-
         }
 
 
