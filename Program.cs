@@ -26,7 +26,43 @@ namespace Blackjack
                 DealerHand[i] = DrawCard(DeckShuffled);
                 DeckShuffled = EmptyTop(DeckShuffled);
             }
+
             int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled);
+            bool MakeChoice = true;
+            bool Bust = false;
+            Console.Clear();
+            switch(PlayerChoice)
+            {
+                case 1:
+                    {
+                        PlayerHand[2] = DrawCard(DeckShuffled);
+                        DeckShuffled = EmptyTop(DeckShuffled);
+                        Bust = CheckBust(PlayerHand);
+                        MakeChoice = true;
+                        break;
+                    }
+                case 2:
+                    {
+                        PlayerHand[2] = DrawCard(DeckShuffled);
+                        DeckShuffled = EmptyTop(DeckShuffled);
+                        Bust = CheckBust(PlayerHand);
+                        MakeChoice = false;
+                        break;
+                    }
+                    case 3:
+                    {
+                        MakeChoice = false;
+                        break;
+                    }
+            }
+            if(Bust == false)
+            {
+
+            }
+            else
+            {
+                Console.WriteLine("Bust!");
+            }
         }
 
         
@@ -213,25 +249,36 @@ namespace Blackjack
             return Bet;
         }
 
-        
+        //Juliansicherung fehlt
          static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled)
          {
              Console.WriteLine($"Du hast {PlayerHand[0]} und {PlayerHand[1]}. Eine Karte des Dealers ist {DealerHand[0]}. Was möchtest du machen?" +
                 $"\n1: Hit \n2: Double \n3: Stand");
              bool Repeat = true;
              int PlayerAction = 0;
-             while (Repeat == true)
-             {
-                 PlayerAction = Convert.ToInt32(Console.ReadLine());
-                 bool IsActionNumeric = int.TryParse(Console.ReadLine(), out PlayerAction);
-                 if(IsActionNumeric && PlayerAction == 1 || PlayerAction == 2 || PlayerAction == 3)
-                 {
-                     Repeat = false;
-                 }
-                 else { Console.Clear(); Console.WriteLine("Falsche Eingabe"); }
-             }
+             PlayerAction = Convert.ToInt32(Console.ReadLine());
              return PlayerAction;
          }
+
+
+        static bool CheckBust(int[] Hand)
+        {
+            int HandTotal = 0;
+            bool Bust = false;
+            for (int i = 0; i < 12; i++)
+            {
+                HandTotal = Hand[i] + HandTotal;
+            }
+            if(HandTotal > 21)
+            {
+                Bust = true;
+            }
+            else
+            {
+                Bust = false;
+            }
+            return Bust;
+        }
 
 
 
