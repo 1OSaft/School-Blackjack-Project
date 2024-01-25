@@ -20,6 +20,7 @@ namespace Blackjack
                 PlayerHand[i] = DrawCard(DeckShuffled);
                 DeckShuffled = EmptyTop(DeckShuffled);
             }
+            int[] DealerHand = new int[20];
             for (int i = 0; i < 2; i++)
             {
                 DealerHand[i] = DrawCard(DeckShuffled);
