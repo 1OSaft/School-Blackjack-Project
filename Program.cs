@@ -120,23 +120,25 @@ namespace Blackjack
             return Deck;
         }
 
+        
 
+        //Get starting Money, adds or substracts a specific amount of money
         static double GetMoney(string MoneyType, double Money, double Amount, string MathType)
         {
-            if (MoneyType == "start")
+            if (MoneyType == "start")       //Get starting Money
             {
                 double StartingMoney = 0;
                 bool repeat = true;
                 Console.Clear();
-                while (repeat)
+                while (repeat)      //Loop for checking if amount is valid
                 {
                     Console.WriteLine("Mit wie viel Startgeld willst du starten? ");
                     bool IsStartingMoneyNumeric = double.TryParse(Console.ReadLine(), out StartingMoney);
-                    if (IsStartingMoneyNumeric)
+                    if (IsStartingMoneyNumeric)         //Success message
                     {
                         repeat = false;
                     }
-                    else
+                    else        //Error message for an invalid amount
                     {
                         Console.Clear();
                         Console.WriteLine("Ungültige Eingabe");
@@ -147,22 +149,21 @@ namespace Blackjack
 
                 return StartingMoney;
             }
-            else
+            else        //Adding or Substracting amount of currentBalance
             {
-                if (MathType == "-")
+                if (MathType == "-")        //Subtracting
                 {
                     Money = Money - Amount;
                 }
-                else
+                else        //Adding
                 {
                     Money = Money - Amount;
                 }
                 return Money;
             }
         }
- 
 
-
+        
 
         //Get how much money the players betts
         static double GetBet(double CurrentBalance)
