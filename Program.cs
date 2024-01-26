@@ -7,12 +7,12 @@ namespace Blackjack
     {
         static void Main(string[] args)
         {
-            double CurrentBalance = GetMoney("start", 0, 0, "");
+            double CurrentBalance = GetMoney("start", 0, 0);
             int[] PlayDeck = GetPlayDeck();
             int[] DeckShuffled = ShuffleDeck(PlayDeck);
 
             double CurrentBet = GetBet(CurrentBalance);
-            CurrentBalance = GetMoney("Other", CurrentBalance, CurrentBet, "-");
+            CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
             
             int[] PlayerHand = new int[20];
             for (int i = 0; i < 2; i++)
@@ -46,10 +46,10 @@ namespace Blackjack
                         bool RepeatDouble = true;
                         while (RepeatDouble)
                         {
-                            double CanDouble = GetMoney("Check", CurrentBalance, CurrentBet * 2, "");
+                            double CanDouble = GetMoney("Check", CurrentBalance, CurrentBet * 2, );
                             if (CanDouble == 2)
                             {
-                                CurrentBalance = GetMoney("Other", CurrentBalance, CurrentBet, "-");
+                                CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
                                 CurrentBet = CurrentBet * 2;
                                 RepeatDouble = false;
                                 PlayerHand[2] = DrawCard(DeckShuffled);
@@ -179,62 +179,56 @@ namespace Blackjack
         }
 
         
-
         //Get starting Money, adds or substracts a specific amount of money
-        static double GetMoney(string MoneyType, double Money, double Amount, string MathType)
+        static double GetMoney(string MoneyType, double Money, double Amount)
         {
-            if (MoneyType == "start")       //Get starting Money
+            switch (MoneyType)
             {
-                double StartingMoney = 0;
-                bool repeat = true;
-                Console.Clear();
-                while (repeat)      //Loop for checking if amount is valid
-                {
-                    Console.WriteLine("Mit wie viel Startgeld willst du starten? ");
-                    bool IsStartingMoneyNumeric = double.TryParse(Console.ReadLine(), out StartingMoney);
-                    if (IsStartingMoneyNumeric)         //Success message
+                case "start":
+                    double StartingMoney = 0;
+                    bool repeat = true;
+                    Console.Clear();
+                    while (repeat)      //Loop for checking if amount is valid
                     {
-                        repeat = false;
+                        Console.WriteLine("Mit wie viel Startgeld willst du starten? ");
+                        bool IsStartingMoneyNumeric = double.TryParse(Console.ReadLine(), out StartingMoney);
+                        if (IsStartingMoneyNumeric && StartingMoney > 0)         //Success message
+                        {
+                            repeat = false;
+                        }
+                        else        //Error message for an invalid amount
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Ungültige Eingabe");
+                            repeat = true;
+                        }
                     }
-                    else        //Error message for an invalid amount
+                    return StartingMoney;
+                case "check":
+                    double CheckType = 0;
+                    if (Amount > Money)
                     {
-                        Console.Clear();
-                        Console.WriteLine("Ungültige Eingabe");
-                        repeat = true;
+                        CheckType = 1;
                     }
-                }
+                    else
+                    {
+                        CheckType = 2;
+                    }
 
-
-                return StartingMoney;
-            }
-            else if (MoneyType == "Check")
-            {
-                double CheckType = 0;
-                if (Amount > Money)
-                {
-                    CheckType = 1;
-                }
-                else
-                {
-                    CheckType = 2;
-                }
-            
-                return CheckType;
-            }
-            else        //Adding or Substracting amount of currentBalance
-            {
-                if (MathType == "-")        //Subtracting
-                {
+                    return CheckType;
+                case "Surrender":
+                    Money = Money - Amount / 2;
+                    return Money;
+                case "-":
                     Money = Money - Amount;
-                }
-                else        //Adding
-                {
-                    Money = Money - Amount;
-                }
-                return Money;
+                    return Money;
+                case "+":
+                    Money = Money + Amount;
+                    return Money;
+                default:
+                    return 0;
             }
         }
-
         
 
         //Get how much money the players betts
