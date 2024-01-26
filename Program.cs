@@ -13,7 +13,7 @@ namespace Blackjack
 
             double CurrentBet = GetBet(CurrentBalance);
             CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
-            
+
             int[] PlayerHand = new int[20];
             for (int i = 0; i < 2; i++)
             {
@@ -31,7 +31,7 @@ namespace Blackjack
             bool MakeChoice = true;
             bool Bust = false;
             Console.Clear();
-            switch(PlayerChoice)
+            switch (PlayerChoice)
             {
                 case 1:
                     {
@@ -41,12 +41,12 @@ namespace Blackjack
                         MakeChoice = true;
                         break;
                     }
-               case 2:
-                    {  
+                case 2:
+                    {
                         bool RepeatDouble = true;
                         while (RepeatDouble)
                         {
-                            double CanDouble = GetMoney("Check", CurrentBalance, CurrentBet * 2, );
+                            double CanDouble = GetMoney("Check", CurrentBalance, CurrentBet * 2);
                             if (CanDouble == 2)
                             {
                                 CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
@@ -65,13 +65,13 @@ namespace Blackjack
                         MakeChoice = false;
                         break;
                     }
-            case 3:
+                case 3:
                     {
                         MakeChoice = false;
                         break;
                     }
             }
-            if(Bust == false)
+            if (Bust == false)
             {
 
             }
@@ -81,7 +81,7 @@ namespace Blackjack
             }
         }
 
-        
+
         //Get Array of 6 or 8 Playdecks
         static int[] GetPlayDeck()
         {
@@ -178,7 +178,7 @@ namespace Blackjack
             return Deck;
         }
 
-        
+
         //Get starting Money, adds or substracts a specific amount of money
         static double GetMoney(string MoneyType, double Money, double Amount)
         {
@@ -229,7 +229,7 @@ namespace Blackjack
                     return 0;
             }
         }
-        
+
 
         //Get how much money the players betts
         static double GetBet(double CurrentBalance)
@@ -274,15 +274,15 @@ namespace Blackjack
         }
 
         //Juliansicherung fehlt
-         static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled)
-         {
-             Console.WriteLine($"Du hast {PlayerHand[0]} und {PlayerHand[1]}. Eine Karte des Dealers ist {DealerHand[0]}. Was möchtest du machen?" +
-                $"\n1: Hit \n2: Double \n3: Stand");
-             bool Repeat = true;
-             int PlayerAction = 0;
-             PlayerAction = Convert.ToInt32(Console.ReadLine());
-             return PlayerAction;
-         }
+        static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled)
+        {
+            Console.WriteLine($"Du hast {PlayerHand[0]} und {PlayerHand[1]}. Eine Karte des Dealers ist {DealerHand[0]}. Was möchtest du machen?" +
+               $"\n1: Hit \n2: Double \n3: Stand");
+            bool Repeat = true;
+            int PlayerAction = 0;
+            PlayerAction = Convert.ToInt32(Console.ReadLine());
+            return PlayerAction;
+        }
 
 
         static bool CheckBust(int[] Hand)
@@ -293,7 +293,7 @@ namespace Blackjack
             {
                 HandTotal = Hand[i] + HandTotal;
             }
-            if(HandTotal > 21)
+            if (HandTotal > 21)
             {
                 Bust = true;
             }
@@ -303,38 +303,38 @@ namespace Blackjack
             }
             return Bust;
         }
-        
+
         static int[] Discard(int[] dealerDisc, int[] playerDisc, int[] discardPile)
         {
             //requires dealer Hand and Player Hand to discard (requires initialized discard Pile according to length of Deck of size 8) : int[] discardPile = new int[416]; for 8 deck
             dealerDisc[0] = 5; dealerDisc[1] = 7; dealerDisc[2] = 0;
-        
+
             int dealerLength = 0, playerLength = 0, dhcount = 0, phcount = 0;
             int discardLength = discardPile.Length;
-            while(dealerDisc[dealerLength] != 0 && dealerLength <= dealerDisc.Length)
+            while (dealerDisc[dealerLength] != 0 && dealerLength <= dealerDisc.Length)
             {
                 dealerLength++;
             }
-            
+
             while (playerDisc[playerLength] != 0 && playerLength <= playerDisc.Length)
             {
                 playerLength++;
             }
-            for(int i = 0; i < discardPile.Length && phcount < playerLength && dhcount < dealerLength;)
+            for (int i = 0; i < discardPile.Length && phcount < playerLength && dhcount < dealerLength;)
             {
-               
+
                 if (discardPile[i] == 0)
                 {
-                    
-                    if(dealerDisc[dhcount] != 0)
+
+                    if (dealerDisc[dhcount] != 0)
                     {
                         discardPile[i] = dealerDisc[dhcount];
-                        
+
                         dhcount++;
                         i++;
                         //adds dealer card to discard
                     }
-                    if(playerDisc[phcount] != 0)
+                    if (playerDisc[phcount] != 0)
                     {
                         discardPile[i] = playerDisc[phcount];
                         phcount++;
@@ -343,8 +343,8 @@ namespace Blackjack
                     }
                     else
                     {
-                        i++;         
-                    }   
+                        i++;
+                    }
                 }
             }
             return discardPile;
