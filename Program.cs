@@ -14,20 +14,20 @@ namespace Blackjack
             double CurrentBet = GetBet(CurrentBalance);
             CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
 
-            int[] PlayerHand = new int[20];
+            int[] PlayerHand = new int[22];
             for (int i = 0; i < 2; i++)
             {
                 PlayerHand[i] = DrawCard(DeckShuffled);
                 DeckShuffled = EmptyTop(DeckShuffled);
             }
-            int[] DealerHand = new int[20];
+            int[] DealerHand = new int[22];
             for (int i = 0; i < 2; i++)
             {
                 DealerHand[i] = DrawCard(DeckShuffled);
                 DeckShuffled = EmptyTop(DeckShuffled);
             }
 
-            int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled);
+            int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet);
             bool MakeChoice = true;
             bool Bust = false;
             Console.Clear();
@@ -46,7 +46,7 @@ namespace Blackjack
                         bool RepeatDouble = true;
                         while (RepeatDouble)
                         {
-                            double CanDouble = GetMoney("Check", CurrentBalance, CurrentBet * 2);
+                            double CanDouble = GetMoney("check", CurrentBalance, CurrentBet * 2);
                             if (CanDouble == 2)
                             {
                                 CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
@@ -73,7 +73,7 @@ namespace Blackjack
             }
             if (Bust == false)
             {
-
+               
             }
             else
             {
@@ -179,6 +179,7 @@ namespace Blackjack
         }
 
 
+
         //Get starting Money, adds or substracts a specific amount of money
         static double GetMoney(string MoneyType, double Money, double Amount)
         {
@@ -208,14 +209,12 @@ namespace Blackjack
                     double CheckType = 0;
                     if (Amount > Money)
                     {
-                        CheckType = 1;
+                        return 1;
                     }
                     else
                     {
-                        CheckType = 2;
+                        return 2;
                     }
-
-                    return CheckType;
                 case "Surrender":
                     Money = Money - Amount / 2;
                     return Money;
@@ -274,10 +273,155 @@ namespace Blackjack
         }
 
         //Juliansicherung fehlt
-        static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled)
+        static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled, double CurrentBalance, double CurrentBet)
         {
-            Console.WriteLine($"Du hast {PlayerHand[0]} und {PlayerHand[1]}. Eine Karte des Dealers ist {DealerHand[0]}. Was möchtest du machen?" +
-               $"\n1: Hit \n2: Double \n3: Stand");
+            int HandSize = 0;
+            for (int i = 0; i < 20; i++)
+            {
+                if (PlayerHand[i] != 0)
+                {
+                    HandSize++;
+                }
+            }
+            Console.Clear();
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.WriteLine($"Kontostand: {CurrentBalance}€, Gesetzt: {CurrentBet}€");
+            switch(HandSize)
+            {
+                case 2:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]} und {PlayerHand[1]}.");
+                        break;
+                    }
+                case 3:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]} und {PlayerHand[2]}.");
+                        break;
+                    }
+                case 4:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]} und {PlayerHand[3]}.");
+                        break;
+                    }
+                case 5:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]} und {PlayerHand[4]}.");
+                        break;
+                    }
+                case 6:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]} und {PlayerHand[5]}.");
+                        break;
+                    }
+                case 7:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]} und {PlayerHand[6]}.");
+                        break;
+                    }
+                case 8:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]} und {PlayerHand[7]}.");
+                        break;
+                    }
+                case 9:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]} und {PlayerHand[8]}.");
+                        break;
+                    }
+                case 10:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]} und {PlayerHand[9]}.");
+                        break;
+                    }
+                case 11:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]} und {PlayerHand[10]}.");
+                        break;
+                    }
+                case 12:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]}, {PlayerHand[10]}" +
+                            $" und {PlayerHand[11]}.");
+                        break;
+                    }
+                case 13:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]}, {PlayerHand[10]}," +
+                            $" {PlayerHand[11]} und {PlayerHand[12]}.");
+                        break;
+                    }
+                case 14:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]}, {PlayerHand[10]}," +
+                            $" {PlayerHand[11]}, {PlayerHand[12]} und {PlayerHand[13]}.");
+                        break;
+                    }
+                case 15:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]}, {PlayerHand[10]}," +
+                            $" {PlayerHand[11]}, {PlayerHand[12]}, {PlayerHand[13]} und {PlayerHand[14]}.");
+                        break;
+                    }
+                case 16:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]}, {PlayerHand[10]}," +
+                            $" {PlayerHand[11]}, {PlayerHand[12]}, {PlayerHand[13]}, {PlayerHand[14]} und {PlayerHand[15]}.");
+                        break;
+                    }
+                case 17:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]}, {PlayerHand[10]}," +
+                            $" {PlayerHand[11]}, {PlayerHand[12]}, {PlayerHand[13]}, {PlayerHand[14]}, {PlayerHand[15]} und {PlayerHand[16]}.");
+                        break;
+                    }
+                case 18:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]}, {PlayerHand[10]}," +
+                            $" {PlayerHand[11]}, {PlayerHand[12]}, {PlayerHand[13]}, {PlayerHand[14]}, {PlayerHand[15]}, {PlayerHand[16]}" +
+                            $" und {PlayerHand[17]}.");
+                        break;
+                    }
+                case 19:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]}, {PlayerHand[10]}," +
+                            $" {PlayerHand[11]}, {PlayerHand[12]}, {PlayerHand[13]}, {PlayerHand[14]}, {PlayerHand[15]}, {PlayerHand[16]}," +
+                            $" {PlayerHand[17]}, und {PlayerHand[18]}.");
+                        break;
+                    }
+                case 20:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]}, {PlayerHand[10]}," +
+                            $" {PlayerHand[11]}, {PlayerHand[12]}, {PlayerHand[13]}, {PlayerHand[14]}, {PlayerHand[15]}, {PlayerHand[16]}," +
+                            $" {PlayerHand[17]}, {PlayerHand[18]}, und {PlayerHand[19]}.");
+                        break;
+                    }
+                case 21:
+                    {
+                        Console.WriteLine($"Du hast {PlayerHand[0]}, {PlayerHand[1]}, {PlayerHand[2]}, {PlayerHand[3]}, {PlayerHand[4]}, " +
+                            $"{PlayerHand[5]}, {PlayerHand[6]}, {PlayerHand[7]}, {PlayerHand[8]}, {PlayerHand[9]}, {PlayerHand[10]}," +
+                            $" {PlayerHand[11]}, {PlayerHand[12]}, {PlayerHand[13]}, {PlayerHand[14]}, {PlayerHand[15]}, {PlayerHand[16]}," +
+                            $" {PlayerHand[17]}, {PlayerHand[18]}, {PlayerHand[19]} und {PlayerHand[20]}.");
+                        break;
+                    }
+            }
+            Console.WriteLine($"Eine Karte des Dealers ist {DealerHand[0]}. Was möchtest du machen?" +
+               $"\n1: Hit" +
+               $" \n2: Double" +
+               $" \n3: Stand");
             bool Repeat = true;
             int PlayerAction = 0;
             PlayerAction = Convert.ToInt32(Console.ReadLine());
