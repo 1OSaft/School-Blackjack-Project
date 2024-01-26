@@ -279,7 +279,52 @@ namespace Blackjack
             }
             return Bust;
         }
-
+        
+        static int[] Discard(int[] dealerDisc, int[] playerDisc, int[] discardPile)
+        {
+            //requires dealer Hand and Player Hand to discard (requires initialized discard Pile according to length of Deck of size 8) : int[] discardPile = new int[416]; for 8 deck
+            dealerDisc[0] = 5; dealerDisc[1] = 7; dealerDisc[2] = 0;
+        
+            int dealerLength = 0, playerLength = 0, dhcount = 0, phcount = 0;
+            int discardLength = discardPile.Length;
+            while(dealerDisc[dealerLength] != 0 && dealerLength <= dealerDisc.Length)
+            {
+                dealerLength++;
+            }
+            
+            while (playerDisc[playerLength] != 0 && playerLength <= playerDisc.Length)
+            {
+                playerLength++;
+            }
+            for(int i = 0; i < discardPile.Length && phcount < playerLength && dhcount < dealerLength;)
+            {
+               
+                if (discardPile[i] == 0)
+                {
+                    
+                    if(dealerDisc[dhcount] != 0)
+                    {
+                        discardPile[i] = dealerDisc[dhcount];
+                        
+                        dhcount++;
+                        i++;
+                        //adds dealer card to discard
+                    }
+                    if(playerDisc[phcount] != 0)
+                    {
+                        discardPile[i] = playerDisc[phcount];
+                        phcount++;
+                        i++;
+                        //adds player card to discard
+                    }
+                    else
+                    {
+                        i++;         
+                    }   
+                }
+            }
+            return discardPile;
+        }
 
 
     }
