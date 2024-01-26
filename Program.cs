@@ -41,15 +41,31 @@ namespace Blackjack
                         MakeChoice = true;
                         break;
                     }
-                case 2:
-                    {
-                        PlayerHand[2] = DrawCard(DeckShuffled);
-                        DeckShuffled = EmptyTop(DeckShuffled);
-                        Bust = CheckBust(PlayerHand);
+               case 2:
+                    {  
+                        bool RepeatDouble = true;
+                        while (RepeatDouble)
+                        {
+                            double CanDouble = GetMoney("Check", CurrentBalance, CurrentBet * 2, "");
+                            if (CanDouble == 2)
+                            {
+                                CurrentBalance = GetMoney("Other", CurrentBalance, CurrentBet, "-");
+                                CurrentBet = CurrentBet * 2;
+                                RepeatDouble = false;
+                                PlayerHand[2] = DrawCard(DeckShuffled);
+                                DeckShuffled = EmptyTop(DeckShuffled);
+                                Bust = CheckBust(PlayerHand);
+                                MakeChoice = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Nicht genügend Geld, Betrüger!");
+                            }
+                        }
                         MakeChoice = false;
                         break;
                     }
-                    case 3:
+            case 3:
                     {
                         MakeChoice = false;
                         break;
@@ -190,6 +206,20 @@ namespace Blackjack
 
 
                 return StartingMoney;
+            }
+            else if (MoneyType == "Check")
+            {
+                double CheckType = 0;
+                if (Amount > Money)
+                {
+                    CheckType = 1;
+                }
+                else
+                {
+                    CheckType = 2;
+                }
+            
+                return CheckType;
             }
             else        //Adding or Substracting amount of currentBalance
             {
