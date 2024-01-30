@@ -27,11 +27,11 @@ namespace Blackjack
                 DeckShuffled = EmptyTop(DeckShuffled);
             }
             string surrender = Surrender(DealerHand, PlayerHand, CurrentBet);
-            if(surrender == "Surrender")
+            if (surrender == "Surrender")
             {
                 CurrentBalance = GetMoney(surrender, CurrentBalance, CurrentBet);
             }
-            
+
             int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet);
             bool MakeChoice = true;
             bool Bust = false;
@@ -78,7 +78,7 @@ namespace Blackjack
             }
             if (Bust == false)
             {
-               
+
             }
             else
             {
@@ -291,7 +291,7 @@ namespace Blackjack
             Console.Clear();
             Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine($"Kontostand: {CurrentBalance}€, Gesetzt: {CurrentBet}€");
-            switch(HandSize)
+            switch (HandSize)
             {
                 case 2:
                     {
@@ -498,22 +498,23 @@ namespace Blackjack
             }
             return discardPile;
         }
-static string Surrender(int[] dealerHand, int[] playerHand, double currentBet)
-{
-    int surrYesOrNo = 0; string returnval = "null";
-    while (surrYesOrNo != 1 || surrYesOrNo != 2)
-    {
-        Console.WriteLine($"Du hast {playerHand[0]} und {playerHand[1]}. Eine Karte des Dealers ist {dealerHand[0]}. Dein Einsatz ist {currentBet}€. Möchtest du Aufgeben? (surrender, du verliers nur die hälfte deines Einsatzes)" +
-                       $"\n1: ja \n2: nein");
-        surrYesOrNo = Convert.ToInt32(Console.ReadLine());
-        Console.Clear(); 
-    }
-    if (surrYesOrNo == 1)
-    {
-        returnval = "Surrender";
-    }
-    return returnval;
-}
+
+        static string Surrender(int[] dealerHand, int[] playerHand, double currentBet)
+        {
+            int surrYesOrNo = 0; string returnval = "null";
+            while (surrYesOrNo != 1 || surrYesOrNo != 2)
+            {
+                Console.WriteLine($"Du hast {playerHand[0]} und {playerHand[1]}. Eine Karte des Dealers ist {dealerHand[0]}. Dein Einsatz ist {currentBet}€. Möchtest du Aufgeben? (surrender, du verliers nur die hälfte deines Einsatzes)" +
+                               $"\n1: ja \n2: nein");
+                surrYesOrNo = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+            }
+            if (surrYesOrNo == 1)
+            {
+                returnval = "Surrender";
+            }
+            return returnval;
+        }
 
     }
 }
