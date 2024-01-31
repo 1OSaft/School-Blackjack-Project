@@ -277,7 +277,7 @@ namespace Blackjack
             return Bet;
         }
 
-        //Juliansicherung fehlt
+
         static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled, double CurrentBalance, double CurrentBet)
         {
             int HandSize = 0;
@@ -429,7 +429,14 @@ namespace Blackjack
                $" \n3: Stand");
             bool Repeat = true;
             int PlayerAction = 0;
-            PlayerAction = Convert.ToInt32(Console.ReadLine());
+            while (Repeat)
+            {
+                bool IsStartingMoneyNumeric = int.TryParse(Console.ReadLine(), out PlayerAction);
+                if (IsStartingMoneyNumeric && PlayerAction == 1 || PlayerAction == 2 || PlayerAction == 3)
+                {
+                    Repeat = false;
+                }
+            }
             return PlayerAction;
         }
 
@@ -502,19 +509,28 @@ namespace Blackjack
         static string Surrender(int[] dealerHand, int[] playerHand, double currentBet)
         {
             int surrYesOrNo = 0; string returnval = "null";
-            while (surrYesOrNo != 1 || surrYesOrNo != 2)
+            bool Repeat = false;
+            while (!Repeat && surrYesOrNo != 1 || surrYesOrNo != 2)
             {
                 Console.WriteLine($"Du hast {playerHand[0]} und {playerHand[1]}. Eine Karte des Dealers ist {dealerHand[0]}. Dein Einsatz ist {currentBet}€. Möchtest du Aufgeben? (surrender, du verliers nur die hälfte deines Einsatzes)" +
                                $"\n1: ja \n2: nein");
-                surrYesOrNo = Convert.ToInt32(Console.ReadLine());
+                Repeat = int.TryParse(Console.ReadLine(), out surrYesOrNo);
                 Console.Clear();
             }
             if (surrYesOrNo == 1)
             {
-                returnval = "Surrender";
+                return  "Surrender";
             }
-            return returnval;
+            else
+            {
+                return "JulianDerHS";
+            }
         }
+
+
+
+
+
 
     }
 }
