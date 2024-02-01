@@ -179,23 +179,29 @@ namespace Blackjack
 
 
         static int[] ShuffleDeck(int[] deckToShuffle)
+{
+    Random ranNum = new Random();
+    int randomNum, temp;
+
+    //needs the deck to shuffle (can be unlimited number of cards)
+
+    for (int j = 0; j < 10; j++) //number of shuffels
+    {
+        for (int i = deckToShuffle.Length - 1; i > 0; --i)
         {
-            Random ranNum = new Random();
-            int randomNum, temp;
+            //new random for non shuffeled item
+            randomNum = ranNum.Next(i + 1);
 
-            //needs the deck to shuffle (can be unlimited number of cards)
-            for (int i = deckToShuffle.Length - 1; i > 0; --i)
-            {
-                //new random for non shuffeled item
-                randomNum = ranNum.Next(i + 1);
-
-                //swap the random item with last item in the array
-                temp = deckToShuffle[i];
-                deckToShuffle[i] = deckToShuffle[randomNum];
-                deckToShuffle[randomNum] = temp;
-            }
-            return deckToShuffle;
+            //swap the random item with last item in the array
+            temp = deckToShuffle[i];
+            deckToShuffle[i] = deckToShuffle[randomNum];
+            deckToShuffle[randomNum] = temp;
         }
+    }
+    
+    
+    return deckToShuffle;
+}
 
         static int DrawCard(int[] Deck)
         {
