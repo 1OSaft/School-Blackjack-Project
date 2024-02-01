@@ -336,6 +336,7 @@ namespace Blackjack
                 }
             
             }
+            Console.Write(".");
             Console.WriteLine("");
             
             Console.WriteLine($"Eine Karte des Dealers ist {DealerHand[0]}. Was möchtest du machen?" +
