@@ -473,6 +473,7 @@ namespace Blackjack
             }
             if (HandTotal > 21)
             {
+                HandTotal = 0;
                 for (int i = 0; i < 22; i++)
                 {
                     if (Hand[i] == 11)
