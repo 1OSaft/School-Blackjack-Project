@@ -90,7 +90,9 @@ namespace Blackjack
 
                 if (Bust == true)
                 {
-                    Console.WriteLine("Bust!");
+                    int PlayerFinal = FinalScore(PlayerHand);
+                    int DealerFinal = FinalScore(DealerHand);
+                    Console.WriteLine($"Bust! Du hattest {PlayerFinal}, der Dealer hatte {DealerFinal}.");
                 }
                 else
                 {
@@ -179,29 +181,28 @@ namespace Blackjack
 
 
         static int[] ShuffleDeck(int[] deckToShuffle)
-{
-    Random ranNum = new Random();
-    int randomNum, temp;
-
-    //needs the deck to shuffle (can be unlimited number of cards)
-
-    for (int j = 0; j < 10; j++) //number of shuffels
-    {
-        for (int i = deckToShuffle.Length - 1; i > 0; --i)
         {
-            //new random for non shuffeled item
-            randomNum = ranNum.Next(i + 1);
+            Random ranNum = new Random();
+            int randomNum, temp;
 
-            //swap the random item with last item in the array
-            temp = deckToShuffle[i];
-            deckToShuffle[i] = deckToShuffle[randomNum];
-            deckToShuffle[randomNum] = temp;
+            for (int j = 0; j < 10; j++) //number of shuffels
+            {
+                for (int i = deckToShuffle.Length - 1; i > 0; --i)
+                {
+                    //new random for non shuffeled item
+                    randomNum = ranNum.Next(i + 1);
+
+                    //swap the random item with last item in the array
+                    temp = deckToShuffle[i];
+                    deckToShuffle[i] = deckToShuffle[randomNum];
+                    deckToShuffle[randomNum] = temp;
+                }
+            }
+
+
+            return deckToShuffle;
         }
-    }
     
-    
-    return deckToShuffle;
-}
 
         static int DrawCard(int[] Deck)
         {
@@ -306,7 +307,7 @@ namespace Blackjack
                         Console.Clear();
                         Console.OutputEncoding = Encoding.UTF8;
                         Console.WriteLine("Du darfst nur so viel setzen, wie du auch hast!");
-                        Console.WriteLine($"Aktuell hasst du {CurrentBalance}€");
+                        Console.WriteLine($"Aktuell hast du {CurrentBalance}€");
                     }
                 }
                 else        // Error message if its not a valid amount
