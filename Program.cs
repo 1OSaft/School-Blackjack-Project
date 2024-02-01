@@ -26,63 +26,68 @@ namespace Blackjack
                 DealerHand[i] = DrawCard(DeckShuffled);
                 DeckShuffled = EmptyTop(DeckShuffled);
             }
+            bool MakeChoice = true;
             string surrender = Surrender(DealerHand, PlayerHand, CurrentBet);
             if (surrender == "Surrender")
             {
                 CurrentBalance = GetMoney(surrender, CurrentBalance, CurrentBet);
+                MakeChoice = false;
             }
 
-            int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet);
-            bool MakeChoice = true;
             bool Bust = false;
-            Console.Clear();
-            switch (PlayerChoice)
+            while (MakeChoice == true && Bust == false)
             {
-                case 1:
-                    {
-                        PlayerHand[2] = DrawCard(DeckShuffled);
-                        DeckShuffled = EmptyTop(DeckShuffled);
-                        Bust = CheckBust(PlayerHand);
-                        MakeChoice = true;
-                        break;
-                    }
-                case 2:
-                    {
-                        bool RepeatDouble = true;
-                        while (RepeatDouble)
+                int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet);
+                Console.Clear();
+                switch (PlayerChoice)
+                {
+                    case 1:
                         {
-                            double CanDouble = GetMoney("check", CurrentBalance, CurrentBet * 2);
-                            if (CanDouble == 2)
-                            {
-                                CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
-                                CurrentBet = CurrentBet * 2;
-                                RepeatDouble = false;
-                                PlayerHand[2] = DrawCard(DeckShuffled);
-                                DeckShuffled = EmptyTop(DeckShuffled);
-                                Bust = CheckBust(PlayerHand);
-                                MakeChoice = false;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Nicht genügend Geld, Betrüger!");
-                            }
+                            PlayerHand[2] = DrawCard(DeckShuffled);
+                            DeckShuffled = EmptyTop(DeckShuffled);
+                            Bust = CheckBust(PlayerHand);
+                            MakeChoice = true;
+                            break;
                         }
-                        MakeChoice = false;
-                        break;
-                    }
-                case 3:
-                    {
-                        MakeChoice = false;
-                        break;
-                    }
-            }
-            if (Bust == false)
-            {
+                    case 2:
+                        {
+                            bool RepeatDouble = true;
+                            while (RepeatDouble)
+                            {
+                                double CanDouble = GetMoney("check", CurrentBalance, CurrentBet * 2);
+                                if (CanDouble == 2)
+                                {
+                                    CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
+                                    CurrentBet = CurrentBet * 2;
+                                    RepeatDouble = false;
+                                    PlayerHand[2] = DrawCard(DeckShuffled);
+                                    DeckShuffled = EmptyTop(DeckShuffled);
+                                    Bust = CheckBust(PlayerHand);
+                                    MakeChoice = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Nicht genügend Geld, Betrüger!");
+                                }
+                            }
+                            MakeChoice = false;
+                            break;
+                        }
+                    case 3:
+                        {
+                            MakeChoice = false;
+                            break;
+                        }
+                }
 
-            }
-            else
-            {
-                Console.WriteLine("Bust!");
+                if (Bust == true)
+                {
+                    Console.WriteLine("Bust!");
+                }
+                else
+                {
+
+                }
             }
         }
 
@@ -447,6 +452,10 @@ namespace Blackjack
             bool Bust = false;
             for (int i = 0; i < 12; i++)
             {
+                if (Hand[i] == 11)
+                {
+                    Hand[i] = 1;
+                }
                 HandTotal = Hand[i] + HandTotal;
             }
             if (HandTotal > 21)
@@ -510,16 +519,16 @@ namespace Blackjack
         {
             int surrYesOrNo = 0; string returnval = "null";
             bool Repeat = false;
-            while (!Repeat && surrYesOrNo != 1 || surrYesOrNo != 2)
+            while (!Repeat && surrYesOrNo != 1 || !Repeat && surrYesOrNo != 2)
             {
-                Console.WriteLine($"Du hast {playerHand[0]} und {playerHand[1]}. Eine Karte des Dealers ist {dealerHand[0]}. Dein Einsatz ist {currentBet}€. Möchtest du Aufgeben? (surrender, du verliers nur die hälfte deines Einsatzes)" +
-                               $"\n1: ja \n2: nein");
+                Console.WriteLine($"Du hast {playerHand[0]} und {playerHand[1]}. Eine Karte des Dealers ist {dealerHand[0]}. Dein Einsatz ist {currentBet}€. Möchtest du Aufgeben? (Du verlierst nur die Hälfte deines Einsatzes)" +
+                               $"\n1: Ja \n2: Nein");
                 Repeat = int.TryParse(Console.ReadLine(), out surrYesOrNo);
                 Console.Clear();
             }
             if (surrYesOrNo == 1)
             {
-                return  "Surrender";
+                return "Surrender";
             }
             else
             {
