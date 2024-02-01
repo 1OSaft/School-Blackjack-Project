@@ -35,6 +35,7 @@ namespace Blackjack
             }
 
             bool Bust = false;
+            int PlayerCard = 2;
             while (MakeChoice == true && Bust == false)
             {
                 int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet);
@@ -43,10 +44,11 @@ namespace Blackjack
                 {
                     case 1:
                         {
-                            PlayerHand[2] = DrawCard(DeckShuffled);
+                            PlayerHand[PlayerCard] = DrawCard(DeckShuffled);
                             DeckShuffled = EmptyTop(DeckShuffled);
                             Bust = CheckBust(PlayerHand);
                             MakeChoice = true;
+                            PlayerCard++;
                             break;
                         }
                     case 2:
@@ -60,7 +62,7 @@ namespace Blackjack
                                     CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
                                     CurrentBet = CurrentBet * 2;
                                     RepeatDouble = false;
-                                    PlayerHand[2] = DrawCard(DeckShuffled);
+                                    PlayerHand[PlayerCard] = DrawCard(DeckShuffled);
                                     DeckShuffled = EmptyTop(DeckShuffled);
                                     Bust = CheckBust(PlayerHand);
                                     MakeChoice = false;
@@ -86,7 +88,25 @@ namespace Blackjack
                 }
                 else
                 {
-
+                    int PlayerFinal = FinalScore(PlayerHand);
+                    int DealerFinal = FinalScore(DealerHand);
+                    int DealerCard = 2;
+                    while (DealerFinal < 17)
+                    {
+                        DealerHand[DealerCard] = DrawCard(DeckShuffled);
+                        DeckShuffled = EmptyTop(DeckShuffled);
+                        DealerFinal = FinalScore(DealerHand);
+                    }
+                    if (DealerFinal > 21)
+                        Console.WriteLine("Der Dealer geht Bust! Du gewinnst!");
+                    else if (PlayerFinal > DealerFinal)
+                    {
+                        Console.WriteLine($"Du hast {PlayerFinal}, der Dealer hat {DealerFinal}. Du gewinnst!");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Du hast {PlayerFinal}, der Dealer hat {DealerFinal}. Du verlierst!");
+                    }
                 }
             }
         }
@@ -450,7 +470,7 @@ namespace Blackjack
         {
             int HandTotal = 0;
             bool Bust = false;
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 22; i++)
             {
                 if (Hand[i] == 11)
                 {
@@ -534,6 +554,28 @@ namespace Blackjack
             {
                 return "JulianDerHS";
             }
+        }
+
+
+        static int FinalScore(int[] Hand)
+        {
+            int HandTotal = 0;
+            for (int i = 0; i < 22; i++)
+            {
+                HandTotal = Hand[i] + HandTotal;
+            }
+            if (HandTotal > 21)
+            {
+                for (int i = 0; i < 22; i++)
+                {
+                    if (Hand[i] == 11)
+                    {
+                        Hand[i] = 1;
+                    }
+                    HandTotal = Hand[i] + HandTotal;
+                }
+            }
+            return HandTotal;
         }
 
 
