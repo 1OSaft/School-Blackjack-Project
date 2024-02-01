@@ -10,76 +10,82 @@ namespace Blackjack
             double CurrentBalance = GetMoney("start", 0, 0);
             int[] PlayDeck = GetPlayDeck();
             int[] DeckShuffled = ShuffleDeck(PlayDeck);
+            bool IsCardInDeck = CheckForCard(DeckShuffled);
+            bool IsMoneyLeft = CheckForMoney(CurrentBalance);
+            bool PlayRound = true;
 
-            double CurrentBet = GetBet(CurrentBalance);
-            CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
+            while (IsCardInDeck == true && IsMoneyLeft == true && PlayRound == true)
+            {
+                double CurrentBet = GetBet(CurrentBalance);
+                CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
 
-            int[] PlayerHand = new int[22];
-            for (int i = 0; i < 2; i++)
-            {
-                PlayerHand[i] = DrawCard(DeckShuffled);
-                DeckShuffled = EmptyTop(DeckShuffled);
-            }
-            int[] DealerHand = new int[22];
-            for (int i = 0; i < 2; i++)
-            {
-                DealerHand[i] = DrawCard(DeckShuffled);
-                DeckShuffled = EmptyTop(DeckShuffled);
-            }
-            bool MakeChoice = true;
-            string surrender = Surrender(DealerHand, PlayerHand, CurrentBet);
-            if (surrender == "Surrender")
-            {
-                CurrentBalance = GetMoney(surrender, CurrentBalance, CurrentBet);
-                MakeChoice = false;
-            }
-
-            bool Bust = false;
-            int PlayerCard = 2;
-            while (MakeChoice == true && Bust == false)
-            {
-                int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet);
-                Console.Clear();
-                switch (PlayerChoice)
+                int[] PlayerHand = new int[22];
+                for (int i = 0; i < 2; i++)
                 {
-                    case 1:
-                        {
-                            PlayerHand[PlayerCard] = DrawCard(DeckShuffled);
-                            DeckShuffled = EmptyTop(DeckShuffled);
-                            Bust = CheckBust(PlayerHand);
-                            MakeChoice = true;
-                            PlayerCard++;
-                            break;
-                        }
-                    case 2:
-                        {
-                            bool RepeatDouble = true;
-                            while (RepeatDouble)
+                    PlayerHand[i] = DrawCard(DeckShuffled);
+                    DeckShuffled = EmptyTop(DeckShuffled);
+                }
+                int[] DealerHand = new int[22];
+                for (int i = 0; i < 2; i++)
+                {
+                    DealerHand[i] = DrawCard(DeckShuffled);
+                    DeckShuffled = EmptyTop(DeckShuffled);
+                }
+                bool MakeChoice = true;
+                string surrender = Surrender(DealerHand, PlayerHand, CurrentBet);
+                if (surrender == "Surrender")
+                {
+                    CurrentBalance = GetMoney(surrender, CurrentBalance, CurrentBet);
+                    MakeChoice = false;
+                }
+
+                bool Bust = false;
+                int PlayerCard = 2;
+                while (MakeChoice == true && Bust == false)
+                {
+                    int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet);
+                    Console.Clear();
+                    switch (PlayerChoice)
+                    {
+                        case 1:
                             {
-                                double CanDouble = GetMoney("check", CurrentBalance, CurrentBet * 2);
-                                if (CanDouble == 2)
-                                {
-                                    CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
-                                    CurrentBet = CurrentBet * 2;
-                                    RepeatDouble = false;
-                                    PlayerHand[PlayerCard] = DrawCard(DeckShuffled);
-                                    DeckShuffled = EmptyTop(DeckShuffled);
-                                    Bust = CheckBust(PlayerHand);
-                                    MakeChoice = false;
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Nicht genügend Geld, Betrüger!");
-                                }
+                                PlayerHand[PlayerCard] = DrawCard(DeckShuffled);
+                                DeckShuffled = EmptyTop(DeckShuffled);
+                                Bust = CheckBust(PlayerHand);
+                                MakeChoice = true;
+                                PlayerCard++;
+                                break;
                             }
-                            MakeChoice = false;
-                            break;
-                        }
-                    case 3:
-                        {
-                            MakeChoice = false;
-                            break;
-                        }
+                        case 2:
+                            {
+                                bool RepeatDouble = true;
+                                while (RepeatDouble)
+                                {
+                                    double CanDouble = GetMoney("check", CurrentBalance, CurrentBet * 2);
+                                    if (CanDouble == 2)
+                                    {
+                                        CurrentBalance = GetMoney("-", CurrentBalance, CurrentBet);
+                                        CurrentBet = CurrentBet * 2;
+                                        RepeatDouble = false;
+                                        PlayerHand[PlayerCard] = DrawCard(DeckShuffled);
+                                        DeckShuffled = EmptyTop(DeckShuffled);
+                                        Bust = CheckBust(PlayerHand);
+                                        MakeChoice = false;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Nicht genügend Geld, Betrüger!");
+                                    }
+                                }
+                                MakeChoice = false;
+                                break;
+                            }
+                        case 3:
+                            {
+                                MakeChoice = false;
+                                break;
+                            }
+                    }
                 }
 
                 if (Bust == true)
@@ -108,6 +114,11 @@ namespace Blackjack
                         Console.WriteLine($"Du hast {PlayerFinal}, der Dealer hat {DealerFinal}. Du verlierst!");
                     }
                 }
+                Console.WriteLine("\nDrücke Enter um noch eine Runde zu spielen. \nDrücke etwas anderes um aufzuhören.");
+                if (Console.ReadKey().Key == ConsoleKey.Enter)
+                    PlayRound = true;
+                else
+                    PlayRound = false;
             }
         }
 
@@ -317,7 +328,7 @@ namespace Blackjack
             Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine($"Kontostand: {CurrentBalance}€, Gesetzt: {CurrentBet}€");
 
-                        int pHC = 0;
+            int pHC = 0;
             Console.Write("Du hast ");
             while (PlayerHand[pHC] != 0)
             {
@@ -334,11 +345,9 @@ namespace Blackjack
                         Console.Write(" und ");
                     }
                 }
-            
             }
             Console.Write(".");
             Console.WriteLine("");
-            
             Console.WriteLine($"Eine Karte des Dealers ist {DealerHand[0]}. Was möchtest du machen?" +
                $"\n1: Hit" +
                $" \n2: Double" +
@@ -467,6 +476,24 @@ namespace Blackjack
                 }
             }
             return HandTotal;
+        }
+
+
+        static bool CheckForCard(int[] Deck)
+        {
+            if (Deck[Deck.Length - 8] == 0)
+                return false;
+            else
+                return true;
+        }
+
+
+        static bool CheckForMoney(double Balance)
+        {
+            if (Balance != 0)
+                return true;
+            else
+                return false;
         }
 
 
