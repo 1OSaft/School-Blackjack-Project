@@ -432,7 +432,7 @@ namespace Blackjack
             bool Repeat = false;
             while (!Repeat && surrYesOrNo != 1 || !Repeat && surrYesOrNo != 2)
             {
-                Console.WriteLine($"Du hast {playerHand[0]} und {playerHand[1]}. Eine Karte des Dealers ist {dealerHand[0]}. Dein Einsatz ist {currentBet}€. Möchtest du Aufgeben? (Du verlierst nur die Hälfte deines Einsatzes)" +
+                Console.WriteLine($"Du hast {playerHand[0]} und {playerHand[1]}. \nEine Karte des Dealers ist {dealerHand[0]}. Dein Einsatz ist {currentBet}€. Möchtest du Aufgeben? (Du verlierst nur die Hälfte deines Einsatzes)" +
                                $"\n1: Ja \n2: Nein");
                 Repeat = int.TryParse(Console.ReadLine(), out surrYesOrNo);
                 Console.Clear();
