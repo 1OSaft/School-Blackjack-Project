@@ -99,7 +99,7 @@ namespace Blackjack
                     int PlayerFinal = FinalScore(PlayerHand);
                     int DealerFinal = FinalScore(DealerHand);
                     int DealerCard = 2;
-                    while (DealerFinal < 17)
+                    while (DealerFinal < 17 && DealerFinal < PlayerFinal)
                     {
                         DealerHand[DealerCard] = DrawCard(DeckShuffled);
                         DeckShuffled = EmptyTop(DeckShuffled);
