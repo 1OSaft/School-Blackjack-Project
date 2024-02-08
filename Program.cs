@@ -11,7 +11,7 @@ namespace Blackjack
             int[] PlayDeck = GetPlayDeck();
             int[] DeckShuffled = ShuffleDeck(PlayDeck);
             bool IsCardInDeck = CheckForCard(DeckShuffled);
-            bool IsMoneyLeft = CheckForMoney(CurrentBalance);
+            bool IsMoneyLeft = true;
             bool PlayRound = true;
 
             while (IsCardInDeck == true && IsMoneyLeft == true && PlayRound == true)
@@ -106,21 +106,42 @@ namespace Blackjack
                         DealerFinal = FinalScore(DealerHand);
                     }
                     if (DealerFinal > 21)
+                    {
                         Console.WriteLine("Der Dealer geht Bust! Du gewinnst!");
+                        CurrentBalance = Payout(CurrentBet, CurrentBalance);
+                    }
                     else if (PlayerFinal > DealerFinal)
                     {
                         Console.WriteLine($"Du hast {PlayerFinal}, der Dealer hat {DealerFinal}. Du gewinnst!");
+                        CurrentBalance = Payout(CurrentBet, CurrentBalance);
                     }
                     else
                     {
                         Console.WriteLine($"Du hast {PlayerFinal}, der Dealer hat {DealerFinal}. Du verlierst!");
                     }
                 }
-                Console.WriteLine("\nDrücke Enter um noch eine Runde zu spielen. \nDrücke etwas anderes um aufzuhören.");
-                if (Console.ReadKey().Key == ConsoleKey.Enter)
-                    PlayRound = true;
-                else
+                IsMoneyLeft = CheckForMoney(CurrentBalance);
+                IsCardInDeck = CheckForCard(DeckShuffled);
+                if (IsMoneyLeft && IsCardInDeck)
+                {
+                    Console.WriteLine("\nDrücke Enter um noch eine Runde zu spielen. \nDrücke etwas anderes um aufzuhören.");
+                    if (Console.ReadKey().Key == ConsoleKey.Enter)
+                        PlayRound = true;
+                    else
+                        PlayRound = false;
+                }
+                else if (!IsCardInDeck)
+                {
+                    Console.WriteLine("\nDas Casino hat für heute Geschlossen, da es keine spielbaren Karten mehr hat.");
                     PlayRound = false;
+                }
+                else if (!IsMoneyLeft)
+                {
+                    Console.WriteLine("\nDu wurdest aus dem Casino geworfen. \nKomm wieder, wenn du Geld hast!");
+                    PlayRound = false;
+                }
+                    
+
             }
         }
 
@@ -202,7 +223,7 @@ namespace Blackjack
 
             return deckToShuffle;
         }
-    
+
 
         static int DrawCard(int[] Deck)
         {
@@ -295,7 +316,7 @@ namespace Blackjack
                 bool IsBetNumeric = double.TryParse(Console.ReadLine(), out Bet);
                 if (IsBetNumeric)
                 {
-                    if (CurrentBalance >= Bet)          //Success message
+                    if (CurrentBalance >= Bet && Bet > 0)          //Success message
                     {
                         Console.Clear();
                         Console.OutputEncoding = Encoding.UTF8;
@@ -498,14 +519,17 @@ namespace Blackjack
 
         static bool CheckForMoney(double Balance)
         {
-            if (Balance != 0)
+            if (Balance > 0)
                 return true;
             else
                 return false;
         }
 
 
-
+        static double Payout(double CurrentBet, double CurrentBalance)
+        {
+            return CurrentBet * 1.5 + CurrentBalance;
+        }
 
 
 
