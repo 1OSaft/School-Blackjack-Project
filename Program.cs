@@ -7,6 +7,8 @@ namespace Blackjack
     {
         static void Main(string[] args)
         {
+            int[] cheatCodes = CheatCodeAsk();
+            int[] discardPile = new int[416];
             double CurrentBalance = GetMoney("start", 0, 0);
             int[] PlayDeck = GetPlayDeck();
             int[] DeckShuffled = ShuffleDeck(PlayDeck);
@@ -43,7 +45,7 @@ namespace Blackjack
                 int PlayerCard = 2;
                 while (MakeChoice == true && Bust == false)
                 {
-                    int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet);
+                    int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet, discardPile);
                     Console.Clear();
                     switch (PlayerChoice)
                     {
@@ -120,6 +122,7 @@ namespace Blackjack
                         Console.WriteLine($"Du hast {PlayerFinal}, der Dealer hat {DealerFinal}. Du verlierst!");
                     }
                 }
+                discardPile = Discard(DealerHand, PlayerHand, discardPile);
                 IsMoneyLeft = CheckForMoney(CurrentBalance);
                 IsCardInDeck = CheckForCard(DeckShuffled);
                 if (IsMoneyLeft && IsCardInDeck)
@@ -380,6 +383,7 @@ namespace Blackjack
                $"\n1: Hit" +
                $" \n2: Double" +
                $" \n3: Stand");
+            CheatCodeCheck(cheatCodes, DealerHand, PlayerHand, discardPile, DeckShuffled);
             bool Repeat = true;
             int PlayerAction = 0;
             while (Repeat)
@@ -530,7 +534,107 @@ namespace Blackjack
         {
             return CurrentBet * 1.5 + CurrentBalance;
         }
+        static int CardCountTrue(int[] dealerHand, int[] playerHand, int[] discardPile, int[] deck) 
+        {
+            int runningCount, trueCount, playerLength, discLength, deckLength, deckLength2;
+            deckLength = 0;
+            for (deckLength = deck.Length-1; deckLength < deck.Length && deck[deckLength] != 0; deckLength--) { }
+            deckLength = deck.Length - deckLength;
+            playerLength = 0; discLength = 0; runningCount = 0;
+            for (; playerLength < playerHand.Length && playerHand[playerLength] != 0; playerLength++)
+            {
+                if (playerHand[playerLength] > 1 && playerHand[playerLength] < 7)
+                {
+                    runningCount++;
+                }
+                if (playerHand[playerLength] > 9)
+                {
+                    runningCount--;
+                }
+            }
+            if (dealerHand[0] > 1 && dealerHand[0] < 7)
+            {
+                runningCount++;
+            }
+            if (dealerHand[0] > 9)
+            {
+                runningCount--;
+            }
+            for (; discLength < discardPile.Length && discardPile[discLength] != 0; discLength++)
+            {
+                if (discardPile[discLength] > 1 && discardPile[discLength] < 7)
+                {
+                    runningCount++;
+                }
+                if (discardPile[discLength] > 9)
+                {
+                    runningCount--;
+                }
+            }
+            deckLength2 = deckLength / 52;
+            trueCount = runningCount / deckLength2;
+            Console.WriteLine($"Running Count: {runningCount}.");
+            return trueCount;
+        }
 
+        static int[] CheatCodeAsk()
+        {
+            //needs int[] cheatCodes = CheatCodeAsk(); at the start of main
+
+            int[] cheatCodes = { 0, 0, 0, 0 };
+            string tempCode;
+
+            Console.WriteLine("Starten? \n1. Ja\n2. Ja");
+            string jaNein = Console.ReadLine();
+            Console.Clear();
+            
+            while (jaNein == "CheatMenu = true")
+            {
+                
+                
+                Console.WriteLine("Gib exit ein um zu beenden\nCode: ");
+                tempCode = Console.ReadLine();
+                if (tempCode == "CardCount")
+                {
+                    cheatCodes[0] = 1;
+                }
+                else if (tempCode == "RevealDealerCard") 
+                {
+                    cheatCodes[1] = 1;
+                }
+                else if (tempCode == "exit")
+                {
+                    jaNein = "";
+                }
+            }
+            for(int i = 0; i < cheatCodes.Length; i++)
+            {
+                Console.Write(cheatCodes[i]);
+                if(i != cheatCodes.Length - 1)
+                {
+                    Console.Write(", ");
+                }
+            }
+            Thread.Sleep(500);
+            return cheatCodes;
+        }
+
+        static void CheatCodeCheck(int[] cheatCodes, int[] dealerHand, int[] playerHand, int[] discardPile, int[] deck)
+        {
+            //cmd is CheatCodeCheck(cheatCodes, DealerHand, PlayerHand, discardPile, DeckShuffled);
+
+            int tempint;
+            
+            if (cheatCodes[0] == 1)
+            {
+                tempint = CardCountTrue(dealerHand, playerHand, discardPile, deck);
+                Console.WriteLine($"True Count ist {tempint}.");
+            }
+            if (cheatCodes[1] == 1)
+            {
+                Console.WriteLine($"Second Dealer Card: {dealerHand[1]}.");
+            }
+        }
 
 
     }
