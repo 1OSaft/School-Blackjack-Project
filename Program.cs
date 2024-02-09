@@ -462,8 +462,9 @@ namespace Blackjack
                     {
                         i++;
                     }
-                    i++;
+                    
                 }
+                i++;
             }
             return discardPile;
         }
