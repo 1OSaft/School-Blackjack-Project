@@ -228,17 +228,20 @@ namespace Blackjack
         }
 
 
+        // Function for getting one card that wasnt drawn before
         static int DrawCard(int[] Deck)
         {
             int i = 0;
-            while (Deck[i] == 0)
+            while (Deck[i] == 0) //Loop for cheching that the card hasnt been drawn before
             {
                 i++;
             }
             int Card = Deck[i];
-            return Card;
+            return Card; //Returns the value of the drawn card
         }
 
+        
+        // Deletes the top card of a deck
         static int[] EmptyTop(int[] Deck)
         {
             int i = 0;
@@ -251,13 +254,12 @@ namespace Blackjack
         }
 
 
-
         //Get starting Money, adds or substracts a specific amount of money
         static double GetMoney(string MoneyType, double Money, double Amount)
         {
             switch (MoneyType)
             {
-                case "start":
+                case "start":       // Case for getting startingmoney
                     double StartingMoney = 0;
                     bool repeat = true;
                     Console.Clear();
@@ -277,7 +279,8 @@ namespace Blackjack
                         }
                     }
                     return StartingMoney;
-                case "check":
+
+                case "check":       // Case for checking if player has enough money
                     double CheckType = 0;
                     if (Amount > Money)
                     {
@@ -287,16 +290,20 @@ namespace Blackjack
                     {
                         return 2;
                     }
-                case "Surrender":
+
+                case "Surrender":       //Case for surrender function
                     Money = Money - Amount / 2;
                     return Money;
-                case "-":
+
+                case "-":       //Case for substracting money
                     Money = Money - Amount;
                     return Money;
-                case "+":
+
+                case "+":       //Case for adding money
                     Money = Money + Amount;
                     return Money;
-                default:
+
+                default:        //If someone was to stupid to use the correct case
                     return 0;
             }
         }
@@ -311,7 +318,7 @@ namespace Blackjack
             Console.Clear();
             while (repeat)          //Loop to ensure a valid amount of money
             {
-                Console.OutputEncoding = Encoding.UTF8;
+                Console.OutputEncoding = Encoding.UTF8;         //Formating console for allowing €
                 Console.WriteLine($"Kontostand: {CurrentBalance}€");
                 Console.WriteLine("Wie viel willst du setzen?");
 
