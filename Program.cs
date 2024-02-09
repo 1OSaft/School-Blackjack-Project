@@ -158,7 +158,7 @@ namespace Blackjack
             }
         }
 
-
+        
         //Get Array of 6 or 8 Playdecks
         static int[] GetPlayDeck()
         {
@@ -182,24 +182,21 @@ namespace Blackjack
                     2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11,
                     2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11
                 };
-            bool repeat = true;
+            bool IsNumberOfDecksNumeric = false;
             int NumberOfDecks = 6;
             Console.Clear();
-            while (repeat)      //Check if amount if valid
+            while (!IsNumberOfDecksNumeric)      //Check if amount if valid
             {
                 Console.WriteLine("Möchtest du mit 6 oder mit 8 Decks spielen?");
-                bool IsNumberOfDecksNumeric = int.TryParse(Console.ReadLine(), out NumberOfDecks);      //Readline
+                IsNumberOfDecksNumeric = int.TryParse(Console.ReadLine(), out NumberOfDecks);      //Readline
                 if (IsNumberOfDecksNumeric && NumberOfDecks == 6 || NumberOfDecks == 8)         //Is it valid?
-                {
-                    repeat = false;
-                }
+                {}
                 else        //Error message
                 {
                     Console.Clear();
                     Console.WriteLine("Ungültige Eingange");
-                    repeat = true;
+                    IsNumberOfDecksNumeric = false;
                 }
-
             }
             if (NumberOfDecks == 6)         //Return Small Playdeck
             {
@@ -264,71 +261,77 @@ namespace Blackjack
 
 
 
+
         //Get starting Money, adds or substracts a specific amount of money
         static double GetMoney(string MoneyType, double Money, double Amount)
         {
+            double ReturnValue = 0;
+
             switch (MoneyType)
             {
-                case "start":            // Case for getting startingmoney
-                    double StartingMoney = 0;
-                    bool repeat = true;
+                case "start":       // Case for getting startingmoney
+                    bool IsStartingMoneyNumeric = false;
                     Console.Clear();
-                    while (repeat)      //Loop for checking if amount is valid
+                    while (!IsStartingMoneyNumeric)      //Loop for checking if amount is valid
                     {
                         Console.WriteLine("Mit wie viel Startgeld willst du starten? ");
-                        bool IsStartingMoneyNumeric = double.TryParse(Console.ReadLine(), out StartingMoney);
-                        if (IsStartingMoneyNumeric && StartingMoney > 0)         //Success message
-                        {
-                            repeat = false;
-                        }
+                        IsStartingMoneyNumeric = double.TryParse(Console.ReadLine(), out ReturnValue);
+                        if (IsStartingMoneyNumeric && ReturnValue > 0)         //Success message
+                        {}
                         else        //Error message for an invalid amount
                         {
                             Console.Clear();
                             Console.WriteLine("Ungültige Eingabe");
-                            repeat = true;
                         }
                     }
-                    return StartingMoney;
+                    break;
+
                 case "check":       // Case for checking if player has enough money
-                    double CheckType = 0;
                     if (Amount > Money)
                     {
-                        return 1;
+                        ReturnValue = 1;
+                        break;
                     }
                     else
                     {
-                        return 2;
+                        ReturnValue = 2;
+                        break;
                     }
+
                 case "Surrender":       //Case for surrender function
-                    Money = Money - Amount / 2;
-                    return Money;
+                    ReturnValue = Money - Amount / 2;
+                    break;
+
                 case "-":       //Case for substracting money
-                    Money = Money - Amount;
-                    return Money;
+                    ReturnValue = Money - Amount;
+                    break;
+
                 case "+":       //Case for adding money
-                    Money = Money + Amount;
-                    return Money;
-                default:       //If someone was to stupid to use the correct case
-                    return 0;
+                    ReturnValue = Money + Amount;
+                    break;
+
+                default:        //If someone was to stupid to use the correct case
+                    ReturnValue = 0;
+                    break;
             }
+            return ReturnValue;
         }
 
 
         //Get how much money the players betts
         static double GetBet(double CurrentBalance)
         {
-
-            bool repeat = true;
+            bool IsBetNumeric = false;
             double Bet = 0;
-            Console.Clear();
-            while (repeat)          //Loop to ensure a valid amount of money
+            while (!IsBetNumeric)          //Loop to ensure a valid amount of money
             {
+                Console.Clear();
                 Console.OutputEncoding = Encoding.UTF8;         //Formating console for allowing €
                 Console.WriteLine($"Kontostand: {CurrentBalance}€");
                 Console.WriteLine("Wie viel willst du setzen?");
 
                 //Check if amount is valid
-                bool IsBetNumeric = double.TryParse(Console.ReadLine(), out Bet);
+                IsBetNumeric = double.TryParse(Console.ReadLine(), out Bet);
                 if (IsBetNumeric)
                 {
                     if (CurrentBalance >= Bet && Bet > 0)          //Success message
@@ -336,7 +339,6 @@ namespace Blackjack
                         Console.Clear();
                         Console.OutputEncoding = Encoding.UTF8;
                         Console.WriteLine($"Du hast erfolgreich {Bet}€ gesetzt");
-                        repeat = false;
                     }
                     else        //Error message if player doesnt have enough money
                     {
@@ -344,13 +346,13 @@ namespace Blackjack
                         Console.OutputEncoding = Encoding.UTF8;
                         Console.WriteLine("Du darfst nur so viel setzen, wie du auch hast!");
                         Console.WriteLine($"Aktuell hast du {CurrentBalance}€");
+                        IsBetNumeric = false;
                     }
                 }
                 else        // Error message if its not a valid amount
                 {
                     Console.Clear();
                     Console.WriteLine("Ungültige Eingabe");
-                    repeat = true;
                 }
             }
             return Bet;
@@ -488,15 +490,17 @@ namespace Blackjack
             return discardPile;
         }
 
+        
+        //Surrender function
         static string Surrender(int[] dealerHand, int[] playerHand, double currentBet)
         {
             int surrYesOrNo = 0; string returnval = "null";
-            bool Repeat = false;
-            while (!Repeat && surrYesOrNo != 1 || !Repeat && surrYesOrNo != 2)
+            bool IsSurrenderNumeric = false;
+            while (!IsSurrenderNumeric && surrYesOrNo != 1 || !IsSurrenderNumeric && surrYesOrNo != 2)
             {
                 Console.WriteLine($"Du hast {playerHand[0]} und {playerHand[1]}. \nEine Karte des Dealers ist {dealerHand[0]}. Dein Einsatz ist {currentBet}€. Möchtest du Aufgeben? (Du verlierst nur die Hälfte deines Einsatzes)" +
                                $"\n1: Ja \n2: Nein");
-                Repeat = int.TryParse(Console.ReadLine(), out surrYesOrNo);
+                IsSurrenderNumeric = int.TryParse(Console.ReadLine(), out surrYesOrNo);
                 Console.Clear();
             }
             if (surrYesOrNo == 1)
