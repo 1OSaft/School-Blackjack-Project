@@ -345,7 +345,7 @@ namespace Blackjack
         }
 
 
-        static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled, double CurrentBalance, double CurrentBet)
+        static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled, double CurrentBalance, double CurrentBet, int[] discardPile)
         {
             int HandSize = 0;
             for (int i = 0; i < 20; i++)
