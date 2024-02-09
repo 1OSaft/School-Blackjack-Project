@@ -45,7 +45,7 @@ namespace Blackjack
                 int PlayerCard = 2;
                 while (MakeChoice == true && Bust == false)
                 {
-                    int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet, discardPile);
+                    int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet, discardPile, cheatCodes);
                     Console.Clear();
                     switch (PlayerChoice)
                     {
@@ -345,7 +345,7 @@ namespace Blackjack
         }
 
 
-        static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled, double CurrentBalance, double CurrentBet, int[] discardPile)
+        static int PlayerTurn(int[] PlayerHand, int[] DealerHand, int[] DeckShuffled, double CurrentBalance, double CurrentBet, int[] discardPile, int[] cheatCodes)
         {
             int HandSize = 0;
             for (int i = 0; i < 20; i++)
