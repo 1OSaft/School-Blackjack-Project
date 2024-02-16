@@ -39,9 +39,9 @@ namespace Blackjack
                 }
                 bool MakeChoice = true;
                 string surrender = Surrender(DealerHand, PlayerHand, CurrentBet);
-                if (surrender == "Surrender")
+                if (surrender == "Aufgeben")
                 {
-                    CurrentBalance = GetMoney(surrender, CurrentBalance, CurrentBet);
+                    CurrentBalance = GetMoney("Surrender", CurrentBalance, CurrentBet);
                     MakeChoice = false;
                 }
 
@@ -50,8 +50,8 @@ namespace Blackjack
                 int PlayerCard = 2;
                 while (MakeChoice == true && Bust == false)
                 {
-                    int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet, discardPile, cheatCodes);
                     Console.Clear();
+                    int PlayerChoice = PlayerTurn(PlayerHand, DealerHand, DeckShuffled, CurrentBalance, CurrentBet, discardPile, cheatCodes);
                     switch (PlayerChoice)
                     {
                         //Choose to hit
@@ -64,7 +64,7 @@ namespace Blackjack
                                 PlayerCard++;
                                 break;
                             }
-                            //Choose to double and check if possible
+                        //Choose to double and check if possible
                         case 2:
                             {
                                 bool RepeatDouble = true;
@@ -89,7 +89,7 @@ namespace Blackjack
                                 MakeChoice = false;
                                 break;
                             }
-                            //Choose to Stand
+                        //Choose to Stand
                         case 3:
                             {
                                 MakeChoice = false;
@@ -158,7 +158,7 @@ namespace Blackjack
             }
         }
 
-        
+
         //Get Array of 6 or 8 Playdecks
         static int[] GetPlayDeck()
         {
@@ -190,7 +190,7 @@ namespace Blackjack
                 Console.WriteLine("Möchtest du mit 6 oder mit 8 Decks spielen?");
                 IsNumberOfDecksNumeric = int.TryParse(Console.ReadLine(), out NumberOfDecks);      //Readline
                 if (IsNumberOfDecksNumeric && NumberOfDecks == 6 || NumberOfDecks == 8)         //Is it valid?
-                {}
+                { }
                 else        //Error message
                 {
                     Console.Clear();
@@ -247,6 +247,7 @@ namespace Blackjack
             return Card;      //Returns the value of the drawn card
         }
 
+
         // Deletes the top card of the deck
         static int[] EmptyTop(int[] Deck)
         {
@@ -258,8 +259,6 @@ namespace Blackjack
             Deck[i] = 0;
             return Deck;
         }
-
-
 
 
         //Get starting Money, adds or substracts a specific amount of money
@@ -277,7 +276,7 @@ namespace Blackjack
                         Console.WriteLine("Mit wie viel Startgeld willst du starten? ");
                         IsStartingMoneyNumeric = double.TryParse(Console.ReadLine(), out ReturnValue);
                         if (IsStartingMoneyNumeric && ReturnValue > 0)         //Success message
-                        {}
+                        { }
                         else        //Error message for an invalid amount
                         {
                             Console.Clear();
@@ -299,7 +298,7 @@ namespace Blackjack
                     }
 
                 case "Surrender":       //Case for surrender function
-                    ReturnValue = Money - Amount / 2;
+                    ReturnValue = Money + (Amount / 2);
                     break;
 
                 case "-":       //Case for substracting money
@@ -339,6 +338,8 @@ namespace Blackjack
                         Console.Clear();
                         Console.OutputEncoding = Encoding.UTF8;
                         Console.WriteLine($"Du hast erfolgreich {Bet}€ gesetzt");
+                        Thread.Sleep(1000);
+                        Console.Clear();
                     }
                     else        //Error message if player doesnt have enough money
                     {
@@ -490,11 +491,11 @@ namespace Blackjack
             return discardPile;
         }
 
-        
+
         //Surrender function
         static string Surrender(int[] dealerHand, int[] playerHand, double currentBet)
         {
-            int surrYesOrNo = 0; string returnval = "null";
+            int surrYesOrNo = 0;
             bool IsSurrenderNumeric = false;
             while (!IsSurrenderNumeric && surrYesOrNo != 1 || !IsSurrenderNumeric && surrYesOrNo != 2)
             {
@@ -502,15 +503,20 @@ namespace Blackjack
                                $"\n1: Ja \n2: Nein");
                 IsSurrenderNumeric = int.TryParse(Console.ReadLine(), out surrYesOrNo);
                 Console.Clear();
+                if (surrYesOrNo != 1 && surrYesOrNo != 2)
+                {
+                    IsSurrenderNumeric = false;
+                }
+                if (surrYesOrNo == 1)
+                {
+                    return "Aufgeben";
+                }
+                else if (surrYesOrNo == 2)
+                {
+                    return "Julian";
+                }
             }
-            if (surrYesOrNo == 1)
-            {
-                return "Surrender";
-            }
-            else
-            {
-                return "JulianDerHS";
-            }
+            return "CodeBroken";
         }
 
 
@@ -612,7 +618,7 @@ namespace Blackjack
             int[] cheatCodes = { 0, 0, 0, 0 };
             string tempCode;
 
-            Console.WriteLine("Starten? \n1. Ja\n2. Ja");
+            Console.WriteLine("Starten? \n1. Ja");
             string jaNein = Console.ReadLine();
             Console.Clear();
 
@@ -635,15 +641,16 @@ namespace Blackjack
                     jaNein = "";
                 }
             }
-            for (int i = 0; i < cheatCodes.Length; i++)
-            {
-                Console.Write(cheatCodes[i]);
-                if (i != cheatCodes.Length - 1)
-                {
-                    Console.Write(", ");
-                }
-            }
-            Thread.Sleep(500);
+            //
+            //for (int i = 0; i < cheatCodes.Length; i++)
+            //{
+            //    Console.Write(cheatCodes[i]);
+            //    if (i != cheatCodes.Length - 1)
+            //    {
+            //        Console.Write(", ");
+            //    }
+            //}
+            //Thread.Sleep(500);
             return cheatCodes;
         }
 
