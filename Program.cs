@@ -16,7 +16,7 @@ namespace Blackjack
             bool isCardInDeck = true; bool isMoneyLeft = true; bool playRound = true; bool betruger = false;
 
             //The main loop including the games steps
-            while (isCardInDeck == true && isMoneyLeft == true && playRound == true)
+            while (isCardInDeck && isMoneyLeft && playRound)
             {
                 //Setting Bet
                 double currentBet = GetBet(currentBalance);
