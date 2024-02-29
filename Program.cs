@@ -13,7 +13,7 @@ namespace Blackjack
             int[] playDeck = GetPlayDeck();
             int[] deckShuffled = ShuffleDeck(playDeck);
             double currentBalance = GetMoney("start", 0, 0);
-            bool isCardInDeck = CheckForCard(deckShuffled); bool isMoneyLeft = true; bool playRound = true; bool betruger = false;
+            bool isCardInDeck = true; bool isMoneyLeft = true; bool playRound = true; bool betruger = false;
 
             //The main loop including the games steps
             while (isCardInDeck == true && isMoneyLeft == true && playRound == true)
