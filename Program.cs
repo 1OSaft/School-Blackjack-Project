@@ -35,18 +35,18 @@ namespace Blackjack
                     DealerHand[i] = DrawCard(deckShuffled);
                     deckShuffled = EmptyTop(deckShuffled);
                 }
-                bool MakeChoice = true;
+                bool makeChoice = true;
                 string surrender = Surrender(DealerHand, playerHand, currentBet);
                 if (surrender == "Aufgeben")
                 {
                     currentBalance = GetMoney("Surrender", currentBalance, currentBet);
-                    MakeChoice = false;
+                    makeChoice = false;
                 }
 
                 //The Loop of Player's Choices
                 bool Bust = false;
                 int PlayerCard = 2;
-                while (MakeChoice == true && Bust == false)
+                while (makeChoice && !Bust)
                 {
                     Console.Clear();
                     int PlayerChoice = PlayerTurn(playerHand, DealerHand, deckShuffled, currentBalance, currentBet, discardPile, cheatCodes);
@@ -58,7 +58,7 @@ namespace Blackjack
                                 playerHand[PlayerCard] = DrawCard(deckShuffled);
                                 deckShuffled = EmptyTop(deckShuffled);
                                 Bust = CheckBust(playerHand);
-                                MakeChoice = true;
+                                makeChoice = true;
                                 PlayerCard++;
                                 break;
                             }
@@ -77,7 +77,7 @@ namespace Blackjack
                                         playerHand[PlayerCard] = DrawCard(deckShuffled);
                                         deckShuffled = EmptyTop(deckShuffled);
                                         Bust = CheckBust(playerHand);
-                                        MakeChoice = false;
+                                        makeChoice = false;
                                     }
                                     else
                                     {
