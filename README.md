@@ -1,3 +1,3 @@
-Hello, this is a professional C# programm
-
-Definitly not illegal
+# School project
+This program was developed for a school project.
+Everything is in german
