@@ -7,6 +7,8 @@ namespace Blackjack
     {
         static void Main(string[] args)
         {
+            // Adds a retro look
+            Console.ForegroundColor = ConsoleColor.Green;
             //Sets up initial game by getting starting balance and shuffling the decks
             int[] cheatCodes = CheatCodeAsk();
             int[] discardPile = new int[416];
