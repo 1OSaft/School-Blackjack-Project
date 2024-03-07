@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-
 namespace Blackjack
 {
     class Programm
@@ -16,14 +15,12 @@ namespace Blackjack
             int[] deckShuffled = ShuffleDeck(playDeck);
             double currentBalance = GetMoney("start", 0, 0);
             bool isCardInDeck = true; bool isMoneyLeft = true; bool playRound = true; bool betruger = false;
-
             //The main loop including the games steps
             while (isCardInDeck && isMoneyLeft && playRound)
             {
                 //Setting Bet
                 double currentBet = GetBet(currentBalance);
                 currentBalance = GetMoney("-", currentBalance, currentBet);
-
                 //Players and Dealer draw and Surrender is an option
                 int[] playerHand = new int[22];
                 for (int i = 0; i < 2; i++)
@@ -44,7 +41,6 @@ namespace Blackjack
                     currentBalance = GetMoney("Surrender", currentBalance, currentBet);
                     makeChoice = false;
                 }
-
                 //The Loop of Player's Choices
                 bool Bust = false;
                 int PlayerCard = 2;
@@ -163,11 +159,9 @@ namespace Blackjack
                         Console.WriteLine("\nDu wurdest aus dem Casino geworfen. \nKomm wieder, wenn du Geld hast!");
                         playRound = false;
                     }
-                }    
+                }
             }
         }
-
-
         //Get Array of 6 or 8 Playdecks
         static int[] GetPlayDeck()
         {
@@ -218,32 +212,24 @@ namespace Blackjack
                 return playDeckBig;
             }
         }
-
-
         static int[] ShuffleDeck(int[] deckToShuffle)
         {
             Random ranNum = new Random();
             int randomNum, temp;
-
             for (int j = 0; j < 10; j++) //number of shuffels
             {
                 for (int i = deckToShuffle.Length - 1; i > 0; --i)
                 {
                     //new random for non shuffeled item
                     randomNum = ranNum.Next(i + 1);
-
                     //swap the random item with last item in the array
                     temp = deckToShuffle[i];
                     deckToShuffle[i] = deckToShuffle[randomNum];
                     deckToShuffle[randomNum] = temp;
                 }
             }
-
-
             return deckToShuffle;
         }
-
-
         // Function for getting one card that wasnt drawn before
         static int DrawCard(int[] deck)
         {
@@ -255,8 +241,6 @@ namespace Blackjack
             int Card = deck[i];
             return Card;      //Returns the value of the drawn card
         }
-
-
         // Deletes the top card of the deck
         static int[] EmptyTop(int[] deck)
         {
@@ -268,13 +252,10 @@ namespace Blackjack
             deck[i] = 0;
             return deck;
         }
-
-
         //Get starting Money, adds or substracts a specific amount of money
         static double GetMoney(string moneyType, double money, double amount)
         {
             double returnValue = 0;
-
             switch (moneyType)
             {
                 case "start":       // Case for getting startingmoney
@@ -293,7 +274,6 @@ namespace Blackjack
                         }
                     }
                     break;
-
                 case "check":       // Case for checking if player has enough money
                     if (amount > money)
                     {
@@ -305,27 +285,21 @@ namespace Blackjack
                         returnValue = 2;
                         break;
                     }
-
                 case "Surrender":       //Case for surrender function
                     returnValue = money + (amount / 2);
                     break;
-
                 case "-":       //Case for substracting money
                     returnValue = money - amount;
                     break;
-
                 case "+":       //Case for adding money
                     returnValue = money + amount;
                     break;
-
                 default:        //If someone was to stupid to use the correct case
                     returnValue = 0;
                     break;
             }
             return returnValue;
         }
-
-
         //Get how much money the players betts
         static double GetBet(double currentBalance)
         {
@@ -337,7 +311,6 @@ namespace Blackjack
                 Console.OutputEncoding = Encoding.UTF8;         //Formating console for allowing €
                 Console.WriteLine($"Kontostand: {currentBalance}€");
                 Console.WriteLine("Wie viel willst du setzen?");
-
                 //Check if amount is valid
                 IsBetNumeric = double.TryParse(Console.ReadLine(), out Bet);
                 if (IsBetNumeric)
@@ -367,8 +340,6 @@ namespace Blackjack
             }
             return Bet;
         }
-
-
         //Asking the player for what to do
         static int PlayerTurn(int[] playerHand, int[] DealerHand, int[] deckShuffled, double currentBalance, double currentBet, int[] discardPile, int[] cheatCodes)
         {
@@ -385,7 +356,6 @@ namespace Blackjack
             Console.Clear();
             Console.OutputEncoding = Encoding.UTF8;
             Console.WriteLine($"Kontostand: {currentBalance}€, Gesetzt: {currentBet}€");
-
             int pHC = 0;
             Console.Write("Du hast ");
             while (playerHand[pHC] != 0)
@@ -424,8 +394,6 @@ namespace Blackjack
             }
             return PlayerAction;
         }
-
-
         //Checking if either Player or Dealer went Bust
         static bool CheckBust(int[] Hand)
         {
@@ -451,33 +419,27 @@ namespace Blackjack
             }
             return Bust;
         }
-
         static int[] Discard(int[] dealerDisc, int[] playerDisc, int[] discardPile)
         {
             //requires dealer Hand and Player Hand to discard (requires initialized discard Pile according to length of Deck of size 8) : int[] discardPile = new int[416]; for 8 deck
             dealerDisc[0] = 5; dealerDisc[1] = 7; dealerDisc[2] = 0;
-
             int dealerLength = 0, playerLength = 0, dhcount = 0, phcount = 0;
             int discardLength = discardPile.Length;
             while (dealerDisc[dealerLength] != 0 && dealerLength <= dealerDisc.Length)
             {
                 dealerLength++;
             }
-
             while (playerDisc[playerLength] != 0 && playerLength <= playerDisc.Length)
             {
                 playerLength++;
             }
             for (int i = 0; i < discardPile.Length && phcount < playerLength && dhcount < dealerLength;)
             {
-
                 if (discardPile[i] == 0)
                 {
-
                     if (dealerDisc[dhcount] != 0)
                     {
                         discardPile[i] = dealerDisc[dhcount];
-
                         dhcount++;
                         i++;
                         //adds dealer card to discard
@@ -493,14 +455,11 @@ namespace Blackjack
                     {
                         i++;
                     }
-
                 }
                 i++;
             }
             return discardPile;
         }
-
-
         //Surrender function
         static string Surrender(int[] dealerHand, int[] playerHand, double currentBet)
         {
@@ -533,8 +492,6 @@ namespace Blackjack
             }
             return "CodeBroken";
         }
-
-
         //Calculates Final Score of Player and Dealer
         static int FinalScore(int[] Hand)
         {
@@ -557,8 +514,6 @@ namespace Blackjack
             }
             return HandTotal;
         }
-
-
         //Checks if at least 8 Cards remain
         static bool CheckForCard(int[] Deck)
         {
@@ -567,8 +522,6 @@ namespace Blackjack
             else
                 return true;
         }
-
-
         //Checks if any money is left
         static bool CheckForMoney(double Balance)
         {
@@ -577,8 +530,6 @@ namespace Blackjack
             else
                 return false;
         }
-
-
         static double Payout(double currentBet, double currentBalance)
         {
             return currentBet * 1.5 + currentBalance;
@@ -625,22 +576,16 @@ namespace Blackjack
             Console.WriteLine($"Running Count: {runningCount}.");
             return trueCount;
         }
-
         static int[] CheatCodeAsk()
         {
             //needs int[] cheatCodes = CheatCodeAsk(); at the start of main
-
             int[] cheatCodes = { 0, 0, 0, 0 };
             string tempCode;
-
             Console.WriteLine("Starten? \n1. Ja");
             string jaNein = Console.ReadLine();
             Console.Clear();
-
             while (jaNein == "CheatMenu = true")
             {
-
-
                 Console.WriteLine("Gib exit ein um zu beenden\nCode: ");
                 tempCode = Console.ReadLine();
                 if (tempCode == "CardCount")
@@ -668,13 +613,10 @@ namespace Blackjack
             //Thread.Sleep(500);
             return cheatCodes;
         }
-
         static void CheatCodeCheck(int[] cheatCodes, int[] dealerHand, int[] playerHand, int[] discardPile, int[] deck)
         {
             //cmd is CheatCodeCheck(cheatCodes, DealerHand, playerHand, discardPile, deckShuffled);
-
             int tempint;
-
             if (cheatCodes[0] == 1)
             {
                 tempint = CardCountTrue(dealerHand, playerHand, discardPile, deck);
@@ -685,7 +627,5 @@ namespace Blackjack
                 Console.WriteLine($"Second Dealer Card: {dealerHand[1]}.");
             }
         }
-
-
     }
 }
